@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ember &amp; Thyme — Bistro Rush</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #241a12;
+    color: #f5e9d3;
+    font-family: Georgia, 'Times New Roman', serif;
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh; padding: 6px 0 8px;
+  }
+  #topbar {
+    width: 960px; display: flex; align-items: baseline; gap: 18px;
+    padding: 0 4px 4px;
+  }
+  #topbar h1 { font-size: 24px; letter-spacing: 1px; color: #ffcf7d; white-space: nowrap; }
+  #topbar .sub { font-size: 13px; color: #c9a; }
+  #hud {
+    width: 960px; display: flex; gap: 14px; align-items: center;
+    padding: 0 4px 5px;
+  }
+  .stat { text-align: center; min-width: 86px; }
+  .stat .label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #b99b6b; }
+  .stat .value { font-size: 24px; font-weight: bold; color: #fff3dd; }
+  #timerBox .value { color: #ffcf7d; }
+  #timerBox.low .value { color: #ff5a4e; }
+  #comboBox .value { color: #8fd6ff; }
+  #orders {
+    flex: 1; display: flex; gap: 8px; min-height: 74px;
+  }
+  .ticket {
+    flex: 1; background: #fff8e7; color: #3a2a18; border-radius: 6px;
+    padding: 6px 8px 5px; position: relative; overflow: hidden;
+    border-top: 4px solid #d98e32;
+  }
+  .ticket.empty {
+    background: #3a2d1e; border: 2px dashed #6b5636; border-top: 4px solid #6b5636;
+    color: #8a744e; display: flex; align-items: center; justify-content: center;
+    font-style: italic; font-size: 13px;
+  }
+  .ticket .dish { font-weight: bold; font-size: 14px; margin-bottom: 3px; }
+  .ticket .needs { font-size: 12px; line-height: 1.5; }
+  .ticket .needs .done { color: #2e7d32; text-decoration: line-through; }
+  .ticket .patience {
+    position: absolute; left: 0; bottom: 0; height: 5px;
+    background: #58b368; width: 100%;
+  }
+  .ticket .patience.low { background: #e0483e; }
+  #wrap { position: relative; width: 960px; height: 640px; }
+  canvas {
+    display: block; width: 960px; height: 640px;
+    background: #6b4a2f; border-radius: 8px;
+    box-shadow: 0 0 0 4px #17100a, 0 12px 32px rgba(0,0,0,.6);
+  }
+  #message {
+    width: 960px; text-align: center; font-size: 15px; min-height: 18px;
+    padding-top: 4px; color: #ffd98a;
+  }
+  #message .key {
+    display: inline-block; background: #f5e9d3; color: #241a12;
+    border-radius: 4px; padding: 0 6px; font-weight: bold; font-size: 13px;
+    margin: 0 2px;
+  }
+  #overlay {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(20, 12, 6, 0.72); border-radius: 8px; z-index: 10;
+  }
+  #overlay.hidden { display: none; }
+  #card {
+    background: #fff8e7; color: #3a2a18; border-radius: 10px; padding: 26px 34px;
+    max-width: 560px; text-align: center; box-shadow: 0 8px 40px rgba(0,0,0,.7);
+  }
+  #card h2 { font-size: 30px; color: #a3541e; margin-bottom: 10px; }
+  #card p { font-size: 15px; line-height: 1.55; margin-bottom: 10px; }
+  #card .big { font-size: 20px; font-weight: bold; }
+  #card button {
+    font-family: inherit; font-size: 17px; font-weight: bold;
+    background: #d98e32; color: #fff8e7; border: none; border-radius: 6px;
+    padding: 10px 26px; cursor: pointer; margin-top: 6px;
+  }
+  #card button:hover { background: #b96f1d; }
+  #card .keys { font-size: 13px; color: #7a6242; }
+  #help { width: 960px; text-align: center; font-size: 12px; color: #a98f68; padding-top: 2px; }
+</style>
+</head>
+<body>
+  <div id="topbar">
+    <h1>Ember &amp; Thyme</h1>
+    <div class="sub">a tiny bistro rush — cook to order, serve before the patience runs out</div>
+  </div>
+  <div id="hud">
+    <div class="stat" id="timerBox"><div class="label">Shift</div><div class="value" id="timer">3:00</div></div>
+    <div class="stat"><div class="label">Score</div><div class="value" id="score">0</div></div>
+    <div class="stat" id="comboBox"><div class="label">Combo</div><div class="value" id="combo">x1</div></div>
+    <div class="stat"><div class="label">Target</div><div class="value" id="target">1500</div></div>
+    <div id="orders"></div>
+  </div>
+  <div id="wrap">
+    <canvas id="game" width="960" height="640"></canvas>
+    <div id="overlay"><div id="card"></div></div>
+  </div>
+  <div id="message"></div>
+  <div id="help">Move: WASD / arrows or click a spot &middot; Interact: E or Space (hold E to chop) &middot; R restart &middot; M sound</div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
